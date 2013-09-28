@@ -10,27 +10,12 @@ from bs4 import BeautifulSoup
 from text.blob import TextBlob
 
 
-@task()
-def lowerize(post_id):
-    post = Post.objects.get(id=post_id)
-
-    post.cleaned = post.cleaned.lower()
-    post.save()
-
-
-@task()
-def word_tokenize(post_id):
-    post = Post.objects.get(id=post_id)
-    text = TextBlob(post.cleaned)
-
-    post.cleaned = ' '.join(text.words)
-    post.save()
-
+##############################################################################
+# BLOGS
 
 @task()
 def discover_type(blog_id):
     blog = Blog.objects.get(id=blog_id)
-
     kind = utils.discover_kind(blog.url)
     blog.kind = kind
     blog.save()
@@ -44,8 +29,14 @@ def discover_feed(blog_id):
         kind = utils.discover_kind(blog.url)
         blog.kind = kind
     feed = utils.discover_feed(blog.url, blog.kind)
+    print feed
     blog.feed = feed
     blog.save()
+
+
+@task()
+def discover_urls(blog_id):
+    blog = Blog.objects.get(id=blog_id)
 
 
 @task()
@@ -83,3 +74,23 @@ def crawl(blog_id, limit=10):
                 logger.info('{0}/{1} OK: {2}'.format(i + 1, n_posts, url))
             time.sleep(3.6)
             # time.sleep((60 * 60) / (len(parsers) * 1000))
+
+
+##############################################################################
+# POSTS
+
+@task()
+def lowerize(post_id):
+    post = Post.objects.get(id=post_id)
+
+    post.cleaned = post.cleaned.lower()
+    post.save()
+
+
+@task()
+def word_tokenize(post_id):
+    post = Post.objects.get(id=post_id)
+    text = TextBlob(post.cleaned)
+
+    post.cleaned = ' '.join(text.words)
+    post.save()

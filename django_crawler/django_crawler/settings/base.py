@@ -227,16 +227,17 @@ from kombu import Queue, Exchange
 crawler_exchange = Exchange('blog_crawler', type='direct')
 
 CELERY_QUEUES = (
-    Queue('utils', crawler_exchange, routing_key='blog_crawler.utils'),
-    Queue('crawl', crawler_exchange, routing_key='blog_crawler.crawl'),
+    Queue('general', crawler_exchange, routing_key='blog_crawler.general'),
+    Queue('readability', crawler_exchange, routing_key='blog_crawler.readability'),
 )
 
 CELERY_ROUTES = {
-    'apps.blog_crawler.tasks.lowerize': {'queue': 'utils', 'routing_key': 'blog_crawler.utils'},
-    'apps.blog_crawler.tasks.word_tokenize': {'queue': 'utils', 'routing_key': 'blog_crawler.utils'},
-    'apps.blog_crawler.tasks.discover_type': {'queue': 'utils', 'routing_key': 'blog_crawler.utils'},
-    'apps.blog_crawler.tasks.discover_feed': {'queue': 'utils', 'routing_key': 'blog_crawler.utils'},
-    'apps.blog_crawler.tasks.crawl': {'queue': 'crawl', 'routing_key': 'blog_crawler.crawl'}
+    'apps.blog_crawler.tasks.discover_type': {'queue': 'general', 'routing_key': 'blog_crawler.general'},
+    'apps.blog_crawler.tasks.discover_feed': {'queue': 'general', 'routing_key': 'blog_crawler.general'},
+    'apps.blog_crawler.tasks.crawl': {'queue': 'readability', 'routing_key': 'blog_crawler.readability'},
+
+    'apps.blog_crawler.tasks.lowerize': {'queue': 'general', 'routing_key': 'blog_crawler.general'},
+    'apps.blog_crawler.tasks.word_tokenize': {'queue': 'general', 'routing_key': 'blog_crawler.general'},
 }
 
 ########## END CELERY CELERY

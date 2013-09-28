@@ -14,6 +14,7 @@ class Blog(models.Model):
 
 
 class Post(models.Model):
+    blog = models.ForeignKey('Blog')
     url = models.CharField(max_length=200)
     content = models.TextField(max_length=2000, blank=True, null=True)
     cleaned = models.TextField(max_length=2000, blank=True, null=True)

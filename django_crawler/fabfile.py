@@ -9,9 +9,15 @@ def runserverplus():
     local('python manage.py runserver_plus')
 
 
-def runceleryworker():
-    local('python manage.py celery worker --loglevel=info -E -B')
-    #python manage.py celery worker --loglevel=info -E -B -Q crawl -c 1
+def runcelerycam():
+    local('python manage.py celerycam')
+
+
+def celery_start_general():
+    local('python manage.py celery worker -Q general -E -B -c 1 -l info ')
+
+def celery_start_readability():
+    local('python manage.py celery worker -Q readability -E -B -c 1 -l info ')
 
 
 def migrate_crawler():
