@@ -7,7 +7,7 @@ import time
 import urllib
 import readability
 from bs4 import BeautifulSoup
-from text.blob import TextBlob
+from textblob import TextBlob
 
 
 ##############################################################################
